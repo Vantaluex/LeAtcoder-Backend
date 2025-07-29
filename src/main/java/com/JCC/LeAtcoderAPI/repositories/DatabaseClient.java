@@ -1,4 +1,4 @@
-package com.JCC.LeAtcoderAPI;
+package com.JCC.LeAtcoderAPI.repositories;
 
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
