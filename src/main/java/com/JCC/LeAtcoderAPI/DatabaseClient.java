@@ -4,7 +4,9 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import io.github.cdimascio.dotenv.Dotenv;
 import com.mongodb.client.MongoClient;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DatabaseClient {
     private static final Dotenv dotenv = Dotenv.load();
     private final MongoDatabase dbInstance;
