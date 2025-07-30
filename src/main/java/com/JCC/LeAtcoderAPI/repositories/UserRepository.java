@@ -1,5 +1,6 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
+import com.JCC.LeAtcoderAPI.services.scrapeUser;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -21,18 +22,21 @@ public class UserRepository {
 
     public String createUser(String googleId) {
         Bson filter  = eq("googleId", googleId);
-        if (this.collection.find(filter).first() == null) {
-            // Document userdata = function.takein.userdata(googleId);
-            // this.collection.insertOne(userdata); // Ideally call a function of some sorts that takes in userdata
-            return "User successfully created!";
-        } else {
+        if (this.collection.find(filter).first() != null) {
             return "Existing user";
         }
+        // Document userdata = function.takein.userdata(googleId);
+        // this.collection.insertOne(userdata); // Ideally call a function of some sorts that takes in userdata
+        return "User successfully created!";
     }
 
     public Document getUserInfo(String username) {
         Bson filter  = eq("Username", username);
+        if((Document) this.collection.find(filter).first() == null){
+            return scrapeUser.fetch(username);
+        }
         return (Document) this.collection.find(filter).first();
+
     }
 
     public String editUserName(String username, String newusername){
