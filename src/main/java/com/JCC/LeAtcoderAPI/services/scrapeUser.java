@@ -17,7 +17,7 @@ public class scrapeUser {
             String rank = extractRank(userpage);
             String rating = extractRating(userpage);
 
-            System.out.println("region: " + region);
+            System.out.println("Region: " + region);
             System.out.println("BirthYear: " + birthyear);
             System.out.println("Affiliation: " + affiliation);
             System.out.println("Rank: " + rank);
