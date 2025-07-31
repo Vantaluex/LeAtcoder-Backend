@@ -32,10 +32,10 @@ public class UserRepository {
 
     public Document getUserInfo(String username) {
         Bson filter  = eq("Username", username);
-        if((Document) this.collection.find(filter).first() == null){
+        if(this.collection.find(filter).first() == null){
             return scrapeUser.fetch(username);
         }
-        return (Document) this.collection.find(filter).first();
+        return this.collection.find(filter).first();
 
     }
 
