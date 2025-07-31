@@ -4,6 +4,8 @@ import com.mongodb.client.MongoClients;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
 public class AppConfig {
@@ -12,5 +14,10 @@ public class AppConfig {
     public MongoClient mongoClient() {
         String URI = dotenv.get("MONGO_CONNECTION_URI");
         return MongoClients.create(URI);
+    }
+
+    @Bean
+    MongoOperations mongoTemplate(MongoClient mongoClient) {
+        return new MongoTemplate(mongoClient, "LeAtcoder");
     }
 }
