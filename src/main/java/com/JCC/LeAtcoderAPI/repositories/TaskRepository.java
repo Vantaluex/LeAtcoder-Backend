@@ -11,9 +11,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class TaskRepository {
     private MongoCollection collection;
 
-    public TaskRepository(DatabaseClient dbClient) {
-        this.collection = dbClient.getDb().getCollection("tasks");
-    }
+    public TaskRepository(DatabaseClient dbClient) { this.collection = dbClient.getDb().getCollection("tasks"); }
 
     public Document getTaskContent(String questionId) {
         Bson filter  = eq("id", questionId);
