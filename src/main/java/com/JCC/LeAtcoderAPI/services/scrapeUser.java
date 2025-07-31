@@ -16,19 +16,22 @@ public class scrapeUser {
             String affiliation = extractAffiliation(userpage);
             String rank = extractRank(userpage);
             String rating = extractRating(userpage);
+            String percentile = getPercentile.fetch(Integer.parseInt(rank.replaceAll("(st|nd|rd|th)$", ""))) + "%";
 
             System.out.println("Region: " + region);
             System.out.println("BirthYear: " + birthyear);
             System.out.println("Affiliation: " + affiliation);
             System.out.println("Rank: " + rank);
             System.out.println("Rating: " + rating);
+            System.out.println("Percentile: " + percentile);
 
             org.bson.Document userdata = new org.bson.Document("username", userid)
                     .append("Region", region)
                     .append("BirthYear", birthyear)
                     .append("Affiliation", affiliation)
                     .append("Rank", rank)
-                    .append("Rating", rating);
+                    .append("Rating", rating)
+                    .append("Percentile", percentile);
             return userdata;
         } catch (org.jsoup.HttpStatusException e) {
             if (e.getStatusCode() == 429 || e.getStatusCode() == 403) {
