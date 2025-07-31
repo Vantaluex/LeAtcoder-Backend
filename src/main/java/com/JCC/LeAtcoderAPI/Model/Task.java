@@ -11,7 +11,7 @@ public record Task(
         String _id,
         String url,
         String taskName,
-        String score,
+        int score,
         String statement,
         String constraints,
         String input,
