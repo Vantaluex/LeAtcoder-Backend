@@ -9,6 +9,7 @@ import java.util.List;
 public record Task(
         @Id
         String _id,
+        String id,
         String url,
         String taskName,
         int score,
