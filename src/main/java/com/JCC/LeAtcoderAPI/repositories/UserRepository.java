@@ -1,48 +1,45 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
-import com.JCC.LeAtcoderAPI.services.scrapeUser;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.springframework.stereotype.Repository;
-import com.mongodb.client.result.UpdateResult;
-import javax.print.Doc;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Updates.set;
+import com.JCC.LeAtcoderAPI.Model.Completed;
+import com.JCC.LeAtcoderAPI.Model.Note;
+import com.JCC.LeAtcoderAPI.Model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.repository.Aggregation;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.Update;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
-public class UserRepository {
-    private MongoCollection<Document> collection;
+public interface UserRepository extends MongoRepository<User, String> {
+    @Query("{'_id': ?0}")
+    @Update("{'push'}: {'completedList': ?1}")
+    void addCompletedToUser(String userId, Completed completed);
 
-    public UserRepository(DatabaseClient dbClient) {
-        this.collection = dbClient.getDb().getCollection("users");
-    }
+    @Query(value = "{'_id': ?0}", fields = "{'completedList': 1, '_id': 0}")
+    Page<Completed> getAllCompleted(String userId);
 
-    public String createUser(String googleId) {
-        Bson filter  = eq("googleId", googleId);
-        if (this.collection.find(filter).first() != null) {
-            return "Existing user";
-        }
-        // Document userdata = function.takein.userdata(googleId);
-        // this.collection.insertOne(userdata); // Ideally call a function of some sorts that takes in userdata
-        return "User successfully created!";
-    }
+    // This method will correctly map the result to an Optional<Note>
+    @Aggregation(pipeline = {
+            "{'$match': {'_id': ?0}}",             // Stage 1: Filter by user ID
+            "{'$unwind': '$noteList'}",            // Stage 2: Deconstruct the 'noteList' array
+            "{'$match': {'noteList.taskId': ?1}}", // Stage 3: Filter the unwound documents by taskId
+            "{'$replaceRoot': {'newRoot': '$noteList'}}" // Stage 4: Promote the matching 'Note' object to the root level
+    })
+    Optional<Note> getNoteByIds(String userId, String taskId);
 
-    public Document getUserInfo(String username) {
-        Bson filter  = eq("Username", username);
-        if(this.collection.find(filter).first() == null){
-            return scrapeUser.fetch(username);
-        }
-        return this.collection.find(filter).first();
+    @Query("{'_id': ?0, 'noteList.taskId': {'$ne': ?1}}")
+    @Update("{'$push': {'noteList': ?2}}")
+    void addNewNote(String userId, String taskId, Note note);
 
-    }
+    @Query("{'_id': ?0, 'noteList.taskId': ?1}")
+    @Update("{'$set': {'noteList.$.note': ?2, 'noteList.$.code': ?3}}")
+    void updateNoteFields(String userId, String taskId, String noteText, String code);
 
-    public String editUserName(String username, String newusername){
-        Bson filter  = eq("Username", username);
-        Bson update = set("Username", newusername);
-        collection.updateOne(filter, update);
-        return "Username successfully updated!";
-    }
+    @Query("{'_id': ?0}")
+    @Update("{'$pull': {'noteList': {'taskId': ?1}}}")
+    void removeNote(String userId, String taskId);
 }

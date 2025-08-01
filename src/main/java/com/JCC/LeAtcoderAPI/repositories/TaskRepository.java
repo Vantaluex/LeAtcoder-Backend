@@ -1,20 +1,21 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.bson.conversions.Bson;
+import com.JCC.LeAtcoderAPI.Model.Task;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import static com.mongodb.client.model.Filters.eq;
+
+import java.awt.print.Pageable;
 
 @Repository
-public class TaskRepository {
-    private MongoCollection collection;
+public interface TaskRepository extends MongoRepository<Task, String> {
+    Task findByTaskName(String taskName);
 
-    public TaskRepository(DatabaseClient dbClient) { this.collection = dbClient.getDb().getCollection("tasks"); }
 
-    public Document getTaskContent(String questionId) {
-        Bson filter  = eq("id", questionId);
-        return (Document) this.collection.find(filter).first();
-    }
+    @Query(value = "{ score: { $gte: ?0, $lte: ?1 } }", count = true)
+    int countByScoreBetween(int min, int max);
+
+
+    Page<Task> findByScoreBetween(int min, int max, Pageable pageable);
 }
