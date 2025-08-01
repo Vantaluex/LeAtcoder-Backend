@@ -12,10 +12,8 @@ import java.awt.print.Pageable;
 public interface TaskRepository extends MongoRepository<Task, String> {
     Task findByTaskId(String Id);
 
-
     @Query(value = "{ score: { $gte: ?0, $lte: ?1 } }", count = true)
     int countByScoreBetween(int min, int max);
-
 
     Page<Task> findByScoreBetween(int min, int max, Pageable pageable);
 }
