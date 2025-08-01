@@ -1,9 +1,12 @@
 package com.JCC.LeAtcoderAPI.services;
 
+import com.JCC.LeAtcoderAPI.Model.User;
 import com.JCC.LeAtcoderAPI.repositories.UserRepository;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class getRank {
@@ -15,11 +18,10 @@ public class getRank {
         this.userRepository = userRepository;
     }
 
-    public String fetch(String username) {
-        Document userDoc = userRepository.getUserInfo(username);
-        if (userDoc == null) {
-            return null;
-        }
-        return userDoc.getString("rank");
+    public Integer fetch(String username) {
+        return userRepository.getUserInfo(username)
+                .map(User::rank)
+                .orElse(null);
     }
+
 }
