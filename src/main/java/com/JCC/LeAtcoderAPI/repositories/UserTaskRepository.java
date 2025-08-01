@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserTaskRepository extends MongoRepository<User, String> {
     @Query("{'_id': ?0}")
     @Update("{'push'}: {'completedList': ?1}")
     void addCompletedToUser(String userId, Completed completed);
