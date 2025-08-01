@@ -1,13 +1,13 @@
 package com.JCC.LeAtcoderAPI.services;
-import org.jsoup.select.Elements;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import java.io.IOException;
 import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Service;
 
 
-public class scrapeUser {
-    public static org.bson.Document fetch (String userid){
+@Service
+public class ScrapeService {
+    public static org.bson.Document ScrapeUser (String userid){
         String url = "https://atcoder.jp/users/" + userid;
         try {
             Document userpage = Jsoup.connect(url).get();
@@ -17,13 +17,6 @@ public class scrapeUser {
             String rank = extractRank(userpage);
             String rating = extractRating(userpage);
             String percentile = getPercentile.fetch(Integer.parseInt(rank.replaceAll("(st|nd|rd|th)$", ""))) + "%";
-
-            System.out.println("Region: " + region);
-            System.out.println("BirthYear: " + birthyear);
-            System.out.println("Affiliation: " + affiliation);
-            System.out.println("Rank: " + rank);
-            System.out.println("Rating: " + rating);
-            System.out.println("Percentile: " + percentile);
 
             org.bson.Document userdata = new org.bson.Document("username", userid)
                     .append("Region", region)
@@ -36,11 +29,11 @@ public class scrapeUser {
         } catch (org.jsoup.HttpStatusException e) {
             if (e.getStatusCode() == 429 || e.getStatusCode() == 403) {
                 System.out.println("Rate limited (429). Waiting 5 seconds before retry ");
-                Sleeper.timeout(5000);
+                UtilityService.sleepInSeconds(5);
             }
         } catch (java.io.IOException e) { // Add this catch block
             System.out.println("IO error: " + e.getMessage());
-            Sleeper.timeout(5000);
+            UtilityService.sleepInSeconds(5);
         }
         return null;
     }
