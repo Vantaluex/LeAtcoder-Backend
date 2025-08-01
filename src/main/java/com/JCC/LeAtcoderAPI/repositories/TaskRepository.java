@@ -10,7 +10,7 @@ import java.awt.print.Pageable;
 
 @Repository
 public interface TaskRepository extends MongoRepository<Task, String> {
-    Task findByTaskName(String taskName);
+    Task findByTaskId(String Id);
 
 
     @Query(value = "{ score: { $gte: ?0, $lte: ?1 } }", count = true)
