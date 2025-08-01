@@ -1,3 +1,3 @@
-package com.JCC.LeAtcoderAPI.Model;
+package com.JCC.LeAtcoderAPI.Model.User;
 
 public record Note(String taskId, String note, String code) {}

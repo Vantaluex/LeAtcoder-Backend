@@ -1,4 +1,4 @@
-package com.JCC.LeAtcoderAPI.Model;
+package com.JCC.LeAtcoderAPI.Model.Task;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

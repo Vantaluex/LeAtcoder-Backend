@@ -1,4 +1,4 @@
-package com.JCC.LeAtcoderAPI.Model;
+package com.JCC.LeAtcoderAPI.Model.Task;
 
 public record Sample(String input, String output) {
 }
