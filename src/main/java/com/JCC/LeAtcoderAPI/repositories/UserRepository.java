@@ -37,6 +37,14 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Update("{'$set': {'rank': ?1}}")
     void updateUserRank(String id, int rank);
 
+    @Query("{'_id': ?0}")
+    @Update("{'$set': {'percentile': ?1}}")
+    void updateUserPercentile(String id, double percentile);
+
+    @Query("{'_id': ?0}")
+    @Update("{'$set': {'rating': ?1}}")
+    void updateUserRating(String id, int rating);
+
     // Additional helper method - find user by googleId
     @Query("{'googleId': ?0}")
     Optional<User> findByGoogleId(String googleId);
