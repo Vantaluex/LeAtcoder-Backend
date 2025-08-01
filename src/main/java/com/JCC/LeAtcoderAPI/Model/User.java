@@ -12,6 +12,8 @@ public record User(
     String googleId,
     String userName,
     int rating,
+    double percentile,
+    int rank,
     List<Completed> completedList,
     List<Note> noteList
 ){}
