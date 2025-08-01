@@ -1,9 +1,9 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
 
-import com.JCC.LeAtcoderAPI.Model.Completed;
-import com.JCC.LeAtcoderAPI.Model.Note;
-import com.JCC.LeAtcoderAPI.Model.User;
+import com.JCC.LeAtcoderAPI.Model.User.Completed;
+import com.JCC.LeAtcoderAPI.Model.User.Note;
+import com.JCC.LeAtcoderAPI.Model.User.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;

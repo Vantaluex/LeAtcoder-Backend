@@ -1,6 +1,6 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
-import com.JCC.LeAtcoderAPI.Model.Task;
+import com.JCC.LeAtcoderAPI.Model.Task.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
