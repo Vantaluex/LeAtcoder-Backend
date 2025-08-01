@@ -1,5 +1,6 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
+
 import com.JCC.LeAtcoderAPI.Model.Completed;
 import com.JCC.LeAtcoderAPI.Model.Note;
 import com.JCC.LeAtcoderAPI.Model.User;
@@ -41,5 +42,4 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Query("{'_id': ?0}")
     @Update("{'$pull': {'noteList': {'taskId': ?1}}}")
     void removeNote(String userId, String taskId);
-
 }
