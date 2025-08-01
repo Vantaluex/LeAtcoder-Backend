@@ -12,11 +12,20 @@ public class ScrapeService {
         try {
             Document userpage = Jsoup.connect(url).get();
             String region = extractRegion(userpage);
-            String birthyear = extractBirthYear(userpage);
+            int birthyear = extractBirthYear(userpage);
             String affiliation = extractAffiliation(userpage);
-            String rank = extractRank(userpage);
-            String rating = extractRating(userpage);
-            String percentile = getPercentile.fetch(Integer.parseInt(rank.replaceAll("(st|nd|rd|th)$", ""))) + "%";
+            int rank = extractRank(userpage);
+            int rating = extractRating(userpage);
+            double percentile = getPercentile(rank);
+
+            System.out.println("user: " + userid);
+            System.out.println("region: " + region);
+            System.out.println("birth: " + birthyear);
+            System.out.println("affiliate: " + affiliation);
+            System.out.println("rank: " + rank);
+            System.out.println("rating: " + rating);
+            System.out.println("percentile: " + percentile);
+
 
             org.bson.Document userdata = new org.bson.Document("username", userid)
                     .append("Region", region)
@@ -51,15 +60,15 @@ public class ScrapeService {
         return "Region not found";
     }
 
-    private static String extractBirthYear(Document doc) {
+    private static int extractBirthYear(Document doc) {
         for (Element row : doc.select("table.dl-table tr")) {
             Element th = row.selectFirst("th");
             if (th != null && th.text().equalsIgnoreCase("Birth Year")) {
                 Element td = row.selectFirst("td");
-                return td.text();
+                return Integer.parseInt(td.text().replaceAll("[^\\d]", ""));
             }
         }
-        return "Region not found";
+        return 0;
     }
 
     private static String extractAffiliation(Document doc) {
@@ -73,28 +82,61 @@ public class ScrapeService {
         return "Region not found";
     }
 
-    private static String extractRank(Document doc) {
+    private static int extractRank(Document doc) {
         for (Element row : doc.select("table.dl-table.mt-2 tr")) {
             Element th = row.selectFirst("th");
             if (th != null && th.text().equalsIgnoreCase("Rank")) {
                 Element td = row.selectFirst("td");
-                return td.text();
+                return cleanToInt(td);
             }
         }
-        return "Rank not found";
+        return 0;
     }
 
-    private static String extractRating(Document doc) {
+    private static int extractRating(Document doc) {
         for (Element row : doc.select("table.dl-table.mt-2 tr")) {
             Element th = row.selectFirst("th");
             if (th != null && th.text().equalsIgnoreCase("Rating")) {
                 Element td = row.selectFirst("td");
                 if (td != null) {
                     td.select("img").remove();
-                    return td.text().trim();
+                    return cleanToInt(td);
                 }
             }
         }
-        return "Rating not found";
+        return 0;
+    }
+
+    private static double getPercentile (int userrank){
+        String percentileurl = "https://atcoder.jp/ranking?desc=true&orderBy=rank";
+        try {
+            org.jsoup.nodes.Document percentilepage = Jsoup.connect(percentileurl).get();
+            int usertotal = extractTotaluser(percentilepage);
+            double percentile = 100 * ((double) userrank) / ((double) usertotal);
+
+            return Math.round(percentile * 100.00) / 100.00;
+        } catch (org.jsoup.HttpStatusException e) {
+            if (e.getStatusCode() == 429 || e.getStatusCode() == 403) {
+                System.out.println("Rate limited (429). Waiting 5 seconds before retry ");
+                UtilityService.sleepInSeconds(5);
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("IO error: " + e.getMessage());
+            UtilityService.sleepInSeconds(5);
+        }
+        return 0;
+    }
+    private static int extractTotaluser(Document doc) {
+        for (Element row : doc.select("table.table.table-bordered.table-striped.th-center tr")) {
+            Element td = row.selectFirst("td");
+            if (td != null) {
+                return Integer.parseInt(td.text().replaceAll("[^\\d]", ""));
+            }
+        }
+        return -1;
+    }
+
+    private static int cleanToInt(Element input) {
+        return Integer.parseInt((input.text().replaceAll("[^\\d]", "")).replaceAll("(st|nd|rd|th)$", ""));
     }
 }
