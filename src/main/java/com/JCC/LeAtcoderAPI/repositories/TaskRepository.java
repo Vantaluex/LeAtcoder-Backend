@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface TaskRepository extends MongoRepository<Task, String> {
     Task findByid(String id);
 
-    @Query(value = "{ score: { $gte: ?0, $lte: ?1 } }", count = true)
+    @Query(value = "{ 'score': { '$gte': ?0, '$lte': ?1 } }", count = true)
     int countByScoreBetween(int min, int max);
 
     Page<Task> findByScoreBetween(int min, int max, Pageable pageable);

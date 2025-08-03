@@ -22,13 +22,14 @@ public class TaskService {
     }
 
     public DifficultyObject getTotalDifficulties() {
-        int beginner = this.taskRepository.countByScoreBetween(0, 200);
-        int easy = this.taskRepository.countByScoreBetween(201, 300);
-        int medium = this.taskRepository.countByScoreBetween(301, 450);
-        int hard = this.taskRepository.countByScoreBetween(451, 650);
-        int expert = this.taskRepository.countByScoreBetween(651, 1500);
+        int beginner = this.taskRepository.countByScoreBetween(DifficultyObject.BEGINNER_MIN, DifficultyObject.BEGINNER_MAX);
+        int easy = this.taskRepository.countByScoreBetween(DifficultyObject.EASY_MIN, DifficultyObject.EASY_MAX);
+        int medium = this.taskRepository.countByScoreBetween(DifficultyObject.MEDIUM_MIN, DifficultyObject.MEDIUM_MAX);
+        int hard = this.taskRepository.countByScoreBetween(DifficultyObject.HARD_MIN, DifficultyObject.HARD_MAX);
+        int expert = this.taskRepository.countByScoreBetween(DifficultyObject.EXPERT_MIN, DifficultyObject.EXPERT_MAX);
         return new DifficultyObject(beginner, easy, medium, hard, expert);
     }
+
 
     public List<Task> getTaskList(int index, int min, int max) {
         Pageable pageable = PageRequest.of(index, 50);

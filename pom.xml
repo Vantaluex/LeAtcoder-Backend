@@ -54,7 +54,28 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 			<version>3.5.4</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>5.5.1</version>
+		</dependency>
 
+		<dependency> <!-- For the controller -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>6.2.9</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java for env files -->
 		<dependency>
 			<groupId>io.github.cdimascio</groupId>
