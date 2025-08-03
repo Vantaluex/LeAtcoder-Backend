@@ -18,6 +18,15 @@ public class ScrapeService {
             int rating = extractRating(userpage);
             double percentile = getPercentile(rank);
 
+            System.out.println("user: " + userid);
+            System.out.println("region: " + region);
+            System.out.println("birth: " + birthyear);
+            System.out.println("affiliate: " + affiliation);
+            System.out.println("rank: " + rank);
+            System.out.println("rating: " + rating);
+            System.out.println("percentile: " + percentile);
+
+
             org.bson.Document userdata = new org.bson.Document("username", userid)
                     .append("Region", region)
                     .append("BirthYear", birthyear)
