@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends MongoRepository<Task, String> {
-    Task findByTaskId(String Id);
+    Task findByid(String id);
 
     @Query(value = "{ score: { $gte: ?0, $lte: ?1 } }", count = true)
     int countByScoreBetween(int min, int max);

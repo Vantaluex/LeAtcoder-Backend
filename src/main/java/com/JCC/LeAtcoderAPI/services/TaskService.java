@@ -18,7 +18,7 @@ public class TaskService {
     }
 
     public Task getTaskContent(String taskId) {
-        return this.taskRepository.findByTaskId(taskId);
+        return this.taskRepository.findByid(taskId);
     }
 
     public DifficultyObject getTotalDifficulties() {

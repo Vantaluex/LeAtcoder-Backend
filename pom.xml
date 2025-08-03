@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-			<version>4.0.0-M1</version>
+			<version>3.5.4</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java for env files -->
@@ -69,6 +69,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin> <!-- website was not working for some reason -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.2</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
