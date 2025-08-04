@@ -30,6 +30,6 @@ public class Oauth2SuccessHandler implements org.springframework.security.web.au
         User user = userService.findOrCreateByGoogleId(googleId);
         String tempToken = jwtService.createTempToken(user);
 
-        response.sendRedirect(redirectUrl + "?tempToken=" + tempToken);
+        response.sendRedirect(redirectURL + "?tempToken=" + tempToken);
     }
 }
