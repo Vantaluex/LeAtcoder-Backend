@@ -36,7 +36,7 @@ public class UserService {
         }
     }
 
-    public User insertAndGetUser(String googleId, String userName) {
+    public User findOrCreateByGoogleId(String googleId, String userName) {
         // doesn't return shit right now... fix stat service
         return new User(
                 "",
