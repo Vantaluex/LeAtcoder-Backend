@@ -22,11 +22,11 @@ public class TaskController {
         return taskService.getTaskContent(problemId);
     }
 
-    @GetMapping("/getTaskList/{page}/{difficulty}/{completed}")
+    @GetMapping("/getTaskList")
     public List<Task> getTaskList(
-            @PathVariable int page,
-            @PathVariable String difficulty,
-            @PathVariable boolean completed) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "all") String difficulty,
+            @RequestParam(defaultValue = "false") boolean completed) {
 
         int[] scoreRange = DifficultyObject.getRange(difficulty);
         int pageIndex = page - 1;
