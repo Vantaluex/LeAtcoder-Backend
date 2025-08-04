@@ -18,6 +18,8 @@ public class Oauth2SuccessHandler implements org.springframework.security.web.au
     private UserService userService;
     @Autowired
     private Dotenv dotenv;
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
