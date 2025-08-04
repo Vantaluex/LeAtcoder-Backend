@@ -1,6 +1,5 @@
 package com.JCC.LeAtcoderAPI.services;
 
-import com.JCC.LeAtcoderAPI.Model.User.Completed;
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import com.JCC.LeAtcoderAPI.repositories.UserRepository;
 import org.bson.types.ObjectId;
