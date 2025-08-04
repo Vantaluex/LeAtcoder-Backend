@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -17,9 +18,9 @@ public class Oauth2SuccessHandler implements org.springframework.security.web.au
     @Autowired
     private UserService userService;
     @Autowired
-    private Dotenv dotenv;
-    @Autowired
     private JwtService jwtService;
+    @Value("{auth.redirect.URL")
+    private String redirectURL;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -29,7 +30,6 @@ public class Oauth2SuccessHandler implements org.springframework.security.web.au
         User user = userService.findOrCreateByGoogleId(googleId);
         String tempToken = jwtService.createTempToken(user);
 
-        String redirectUrl = dotenv.get("AUTH_REDIRECT_URL");
         response.sendRedirect(redirectUrl + "?tempToken=" + tempToken);
     }
 }
