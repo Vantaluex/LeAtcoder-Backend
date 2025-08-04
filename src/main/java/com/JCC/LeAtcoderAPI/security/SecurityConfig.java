@@ -18,7 +18,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
-                        .successHandler(new Oauth2SucessHandler())
+                        .successHandler(new Oauth2SuccessHandler())
                 );
         return http.build();
     }
