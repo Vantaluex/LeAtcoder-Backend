@@ -1,6 +1,8 @@
 package com.JCC.LeAtcoderAPI.repositories;
 
 import com.JCC.LeAtcoderAPI.Model.User.User;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
@@ -10,42 +12,29 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-
-    // Check if user exists by userId
-    @Query("{'_id': ?0}")
-    boolean checkUserByUserId(String userId);
-
-    // Check if user exists by googleId
+    // Additional helper method - find user by googleId
     @Query("{'googleId': ?0}")
-    boolean checkUserByGoogleId(String googleId);
-
-    // Get userId by googleId
-    @Query(value = "{'googleId': ?0}", fields = "{'_id': 1}")
-    Optional<String> getUserIdByGoogleId(String googleId); //if user doesn't exist, it returns Optional.empty();
+    Optional<User> findByGoogleId(String googleId);
 
     // Get all user info by id
-    @Query("{'_id': ?0}")
-    Optional<User> getUserInfo(String id);
+    Optional<User> findById(ObjectId Id);
 
     // Update username
     @Query("{'_id': ?0}")
     @Update("{'$set': {'username': ?1}}")
-    void editUserName(String id, String name);
+    void editUserName(ObjectId id, String name);
 
     // Update user rank
     @Query("{'_id': ?0}")
     @Update("{'$set': {'rank': ?1}}")
-    void updateUserRank(String id, int rank);
+    void updateUserRank(ObjectId id, int rank);
 
     @Query("{'_id': ?0}")
     @Update("{'$set': {'percentile': ?1}}")
-    void updateUserPercentile(String id, double percentile);
+    void updateUserPercentile(ObjectId id, double percentile);
 
     @Query("{'_id': ?0}")
     @Update("{'$set': {'rating': ?1}}")
-    void updateUserRating(String id, int rating);
+    void updateUserRating(ObjectId id, int rating);
 
-    // Additional helper method - find user by googleId
-    @Query("{'googleId': ?0}")
-    Optional<User> findByGoogleId(String googleId);
 }
