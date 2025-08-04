@@ -54,12 +54,6 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 			<version>3.5.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync -->
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver-sync</artifactId>
-			<version>5.5.1</version>
-		</dependency>
 
 		<dependency> <!-- For the controller -->
 			<groupId>org.springframework.boot</groupId>
