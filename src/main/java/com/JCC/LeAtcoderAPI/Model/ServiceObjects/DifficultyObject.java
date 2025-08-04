@@ -26,3 +26,4 @@ public record DifficultyObject(int beginner, int easy, int medium, int hard, int
         };
     }
 }
+//{"beginner":727,"easy":356,"medium":419,"hard":856,"expert":12}//
