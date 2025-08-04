@@ -52,7 +52,6 @@ public class TaskService {
 
         // Part 1: Build difficulty criteria
         List<Criteria> difficultyOrCriteriaList = difficulties.stream()
-                .filter(d -> !d.equalsIgnoreCase("all"))
                 .map(difficulty -> {
                     int[] range = DifficultyObject.getRange(difficulty);
                     return Criteria.where("score").gte(range[0]).lte(range[1]);
@@ -65,11 +64,11 @@ public class TaskService {
 
         // Part 2: Build status criteria
         if (!"all".equalsIgnoreCase(status)) {
-            List<String> completedTaskIds = (userId != null) ?
-                    userTaskRepository.findCompletedListByGoogleId(userId)
+            List<String> completedTaskIds = (userId == null) ?
+                    Collections.emptyList()
+                    : userTaskRepository.findCompletedListByGoogleId(userId)
                             .map(User::completedList).orElse(Collections.emptyList())
-                            .stream().map(Completed::taskId).collect(Collectors.toList())
-                    : Collections.emptyList();
+                            .stream().map(Completed::taskId).collect(Collectors.toList());
 
             if ("completed".equalsIgnoreCase(status)) {
                 allConditions.add(Criteria.where("id").in(completedTaskIds));
