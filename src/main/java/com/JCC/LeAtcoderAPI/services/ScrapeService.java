@@ -2,6 +2,7 @@ package com.JCC.LeAtcoderAPI.services;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 
@@ -51,6 +52,26 @@ public class ScrapeService {
         return "Region not found";
     }
 
+    public static boolean checkValidUserName(String userid){
+        String url = "https://atcoder.jp/users/" + userid;
+        try {
+            Document userpage = Jsoup.connect(url).get();
+            String pageTitle = userpage.title();
+            return true;
+        } catch (org.jsoup.HttpStatusException e) {
+            if (e.getStatusCode() == 404) {
+                System.out.println("User not found");
+                return false;
+            }
+            if (e.getStatusCode() == 429 || e.getStatusCode() == 403) {
+                System.out.println("Rate limited");
+            }
+        } catch (java.io.IOException e) { // Add this catch block
+            System.out.println("IO error: " + e.getMessage());
+        }
+        return false;
+    }
+
     private static int extractBirthYear(Document doc) {
         for (Element row : doc.select("table.dl-table tr")) {
             Element th = row.selectFirst("th");
@@ -70,7 +91,7 @@ public class ScrapeService {
                 return td.text();
             }
         }
-        return "Region not found";
+        return "No affiliation";
     }
 
     private static int extractRank(Document doc) {

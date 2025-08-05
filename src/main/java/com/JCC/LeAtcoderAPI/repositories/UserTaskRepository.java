@@ -5,6 +5,7 @@ import com.JCC.LeAtcoderAPI.Model.User.Completed;
 import com.JCC.LeAtcoderAPI.Model.User.Note;
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -20,7 +21,7 @@ public interface UserTaskRepository extends MongoRepository<User, String> {
     void addCompletedToUser(String userId, Completed completed);
 
     @Query(value = "{'_id': ?0}", fields = "{'completedList': 1, '_id': 0}")
-    Page<Completed> getAllCompleted(String userId);
+    Page<Completed> getAllCompleted(String userId, Pageable pageable);
 
     // This method will correctly map the result to an Optional<Note>
     @Aggregation(pipeline = {
@@ -42,4 +43,7 @@ public interface UserTaskRepository extends MongoRepository<User, String> {
     @Query("{'_id': ?0}")
     @Update("{'$pull': {'noteList': {'taskId': ?1}}}")
     void removeNote(String userId, String taskId);
+
+    @Query(value = "{'googleId': ?0}", fields = "{'completedList': 1, '_id': 0}")
+    Optional<User> findCompletedListByGoogleId(String googleId); //change this shit
 }
