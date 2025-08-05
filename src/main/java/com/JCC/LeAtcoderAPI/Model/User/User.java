@@ -8,7 +8,7 @@ import java.util.List;
 @Document(collection = "users")
 public record User(
     @Id
-    String id,
+    String _id,
     String googleId,
     String userName,
     int rating,

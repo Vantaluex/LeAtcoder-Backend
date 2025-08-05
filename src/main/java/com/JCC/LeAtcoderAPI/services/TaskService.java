@@ -71,9 +71,9 @@ public class TaskService {
                             .stream().map(Completed::taskId).collect(Collectors.toList());
 
             if ("completed".equalsIgnoreCase(status)) {
-                allConditions.add(Criteria.where("id").in(completedTaskIds));
+                allConditions.add(Criteria.where("_id").in(completedTaskIds));
             } else { // "uncompleted"
-                allConditions.add(Criteria.where("id").nin(completedTaskIds));
+                allConditions.add(Criteria.where("_id").nin(completedTaskIds));
             }
         }
 

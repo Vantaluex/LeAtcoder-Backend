@@ -16,25 +16,26 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Query("{'googleId': ?0}")
     Optional<User> findByGoogleId(String googleId);
 
-    // Get all user info by id
-    Optional<User> findById(ObjectId Id);
+
+    @Query("{'_id': ?0}")
+    Optional<User> findById(ObjectId _id);
 
     // Update username
     @Query("{'_id': ?0}")
     @Update("{'$set': {'username': ?1}}")
-    void editUserName(ObjectId id, String name);
+    void editUserName(ObjectId _id, String name);
 
     // Update user rank
     @Query("{'_id': ?0}")
     @Update("{'$set': {'rank': ?1}}")
-    void updateUserRank(ObjectId id, int rank);
+    void updateUserRank(ObjectId _id, int rank);
 
     @Query("{'_id': ?0}")
     @Update("{'$set': {'percentile': ?1}}")
-    void updateUserPercentile(ObjectId id, double percentile);
+    void updateUserPercentile(ObjectId _id, double percentile);
 
     @Query("{'_id': ?0}")
     @Update("{'$set': {'rating': ?1}}")
-    void updateUserRating(ObjectId id, int rating);
+    void updateUserRating(ObjectId _id, int rating);
 
 }
