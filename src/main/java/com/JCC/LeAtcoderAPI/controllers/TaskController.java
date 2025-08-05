@@ -5,6 +5,7 @@ import com.JCC.LeAtcoderAPI.Model.Task.Task;
 import com.JCC.LeAtcoderAPI.services.TaskService;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,16 +23,19 @@ public class TaskController {
         return taskService.getTaskContent(problemId);
     }
 
-    @GetMapping("/getTaskList")
+    @GetMapping
     public List<Task> getTaskList(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "all") String difficulty,
-            @RequestParam(defaultValue = "false") boolean completed) {
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "all") List<String> difficulty,
+            @RequestParam(defaultValue = "all") String status,
+            Principal principal) {
 
-        int[] scoreRange = DifficultyObject.getRange(difficulty);
-        int pageIndex = page - 1;
+        // Note: We no longer calculate scoreRange here. The service will handle it.
+        int pageIndex = page > 0 ? page - 1 : 0;
+        String userId = (principal != null) ? principal.getName() : null;
 
-        return taskService.getTaskList(pageIndex, scoreRange[0], scoreRange[1]);
+        // Pass the list directly to the service
+        return taskService.getTaskList(userId, pageIndex, difficulty, status);
     }
 
     // GET /problems/difficulties - Keep the existing difficulty stats

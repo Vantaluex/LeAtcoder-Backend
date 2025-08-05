@@ -43,4 +43,7 @@ public interface UserTaskRepository extends MongoRepository<User, String> {
     @Query("{'_id': ?0}")
     @Update("{'$pull': {'noteList': {'taskId': ?1}}}")
     void removeNote(String userId, String taskId);
+
+    @Query(value = "{'googleId': ?0}", fields = "{'completedList': 1, '_id': 0}")
+    Optional<User> findCompletedListByGoogleId(String googleId); //change this shit
 }

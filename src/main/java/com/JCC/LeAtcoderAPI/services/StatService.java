@@ -2,6 +2,7 @@ package com.JCC.LeAtcoderAPI.services;
 
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import com.JCC.LeAtcoderAPI.repositories.UserRepository;
+import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,10 +14,5 @@ public class StatService {
         this.userRepository = userRepository;
     }
 
-    public Integer getRank(String username) {
-        return userRepository.getUserInfo(username)
-                .map(User::rank)
-                .orElse(null);
-    }
 
 }
