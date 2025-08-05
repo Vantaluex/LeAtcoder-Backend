@@ -19,7 +19,7 @@ public class Oauth2SuccessHandler implements org.springframework.security.web.au
     private UserService userService;
     @Autowired
     private JwtService jwtService;
-    @Value("{auth.redirect.URL")
+    @Value("${auth.redirect.URL")
     private String redirectURL;
 
     @Override

@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtService {
     private final SecretKey signingKey;
 
-    public JwtService(@Value("{jwt.secret}") String jwtSecret) {
+    public JwtService(@Value("${jwt.secret}") String jwtSecret) {
         if (jwtSecret == null) {
             throw new IllegalArgumentException("jwt secret not set");
         }
