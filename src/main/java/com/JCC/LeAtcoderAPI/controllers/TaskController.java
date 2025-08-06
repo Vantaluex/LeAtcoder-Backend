@@ -3,6 +3,9 @@ package com.JCC.LeAtcoderAPI.controllers;
 import com.JCC.LeAtcoderAPI.Model.ServiceObjects.DifficultyObject;
 import com.JCC.LeAtcoderAPI.Model.Task.Task;
 import com.JCC.LeAtcoderAPI.services.TaskService;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -19,8 +22,13 @@ public class TaskController {
     }
 
     @GetMapping("/{problemId}")
-    public Task getProblem(@PathVariable String problemId) {
-        return taskService.getTaskContent(problemId);
+    public ResponseEntity<Task> getProblem(@PathVariable String problemId) {
+        Task task = taskService.getTaskContent(problemId);
+
+        if(task == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(task);
     }
 
     @GetMapping
@@ -30,11 +38,9 @@ public class TaskController {
             @RequestParam(defaultValue = "all") String status,
             Principal principal) {
 
-        // Note: We no longer calculate scoreRange here. The service will handle it.
         int pageIndex = page > 0 ? page - 1 : 0;
         String userId = (principal != null) ? principal.getName() : null;
 
-        // Pass the list directly to the service
         return taskService.getTaskList(userId, pageIndex, difficulty, status);
     }
 
