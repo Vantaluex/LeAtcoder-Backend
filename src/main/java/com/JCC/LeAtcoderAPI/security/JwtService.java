@@ -41,4 +41,18 @@ public class JwtService {
     public String createRefreshToken(String userId) {
         return createTokenBySubAndExpiry(userId, 60 * 60 * 24 * 30);
     }
+
+    public String extractToken(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(signingKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch (Exception e) {
+            // Handle cases where the token is invalid or expired
+            return null; // or throw a specific exception
+        }
+    }
 }
