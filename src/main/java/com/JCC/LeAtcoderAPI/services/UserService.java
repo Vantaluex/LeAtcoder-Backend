@@ -36,32 +36,32 @@ public class UserService {
         ));
     }
 
-    private ObjectId getObjectIdAndCheckInDb(String id) {
-        ObjectId objectId = new ObjectId(id);
+    private ObjectId getObjectIdAndCheckInDb(String _id) {
+        ObjectId objectId = new ObjectId(_id);
         Optional<User> user = userRepository.findById(objectId);
         if (user.isEmpty()) {
-            throw new NoSuchElementException("User with ID " + id + " not found.");
+            throw new NoSuchElementException("User with _id " + _id + " not found.");
         }
         return objectId;
     }
 
-    public void editUserName(String id, String userName) {
-        ObjectId objectId = this.getObjectIdAndCheckInDb(id);
+    public void editUserName(String _id, String userName) {
+        ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
         this.userRepository.editUserName(objectId, userName);
     }
 
-    public void updateUserRank(String id, int rank) {
-        ObjectId objectId = this.getObjectIdAndCheckInDb(id);
+    public void updateUserRank(String _id, int rank) {
+        ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
         this.userRepository.updateUserRank(objectId, rank);
     }
 
-    public void updateUserPercentile(String id, double percentile) {
-        ObjectId objectId = this.getObjectIdAndCheckInDb(id);
+    public void updateUserPercentile(String _id, double percentile) {
+        ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
         this.userRepository.updateUserPercentile(objectId, percentile);
     }
 
-    public void updateUserRating(String id, int rating) {
-        ObjectId objectId = this.getObjectIdAndCheckInDb(id);
+    public void updateUserRating(String _id, int rating) {
+        ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
         this.userRepository.updateUserRating(objectId, rating);
     }
 }
