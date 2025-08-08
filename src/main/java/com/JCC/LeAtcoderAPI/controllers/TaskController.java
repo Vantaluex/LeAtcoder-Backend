@@ -3,8 +3,6 @@ package com.JCC.LeAtcoderAPI.controllers;
 import com.JCC.LeAtcoderAPI.Model.ServiceObjects.DifficultyObject;
 import com.JCC.LeAtcoderAPI.Model.Task.Task;
 import com.JCC.LeAtcoderAPI.services.TaskService;
-import org.apache.coyote.Response;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

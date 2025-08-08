@@ -25,17 +25,9 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Update("{'$set': {'username': ?1}}")
     void editUserName(ObjectId _id, String name);
 
-    // Update user rank
-    @Query("{'_id': ?0}")
-    @Update("{'$set': {'rank': ?1}}")
-    void updateUserRank(ObjectId _id, int rank);
 
     @Query("{'_id': ?0}")
-    @Update("{'$set': {'percentile': ?1}}")
-    void updateUserPercentile(ObjectId _id, double percentile);
-
-    @Query("{'_id': ?0}")
-    @Update("{'$set': {'rating': ?1}}")
-    void updateUserRating(ObjectId _id, int rating);
+    @Update("{'$set': ?1}") // takes in the whole userdocument named stats. should be fine....
+    void updateUserStats(ObjectId _id, org.bson.Document Stats);
 
 }

@@ -50,18 +50,8 @@ public class UserService {
         this.userRepository.editUserName(objectId, userName);
     }
 
-    public void updateUserRank(String _id, int rank) {
+    public void updateUserStats(String _id) {
         ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
-        this.userRepository.updateUserRank(objectId, rank);
-    }
-
-    public void updateUserPercentile(String _id, double percentile) {
-        ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
-        this.userRepository.updateUserPercentile(objectId, percentile);
-    }
-
-    public void updateUserRating(String _id, int rating) {
-        ObjectId objectId = this.getObjectIdAndCheckInDb(_id);
-        this.userRepository.updateUserRating(objectId, rating);
+        this.userRepository.updateUserStats(objectId, ScrapeService.ScrapeUser(_id));
     }
 }
