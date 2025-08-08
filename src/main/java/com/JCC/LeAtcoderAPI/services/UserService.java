@@ -2,6 +2,7 @@ package com.JCC.LeAtcoderAPI.services;
 
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import com.JCC.LeAtcoderAPI.repositories.UserRepository;
+import com.JCC.LeAtcoderAPI.repositories.UserTaskRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
