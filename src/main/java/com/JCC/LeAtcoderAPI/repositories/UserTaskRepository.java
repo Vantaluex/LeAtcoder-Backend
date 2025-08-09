@@ -16,12 +16,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserTaskRepository extends MongoRepository<User, String> {
+
     @Query("{'_id': ?0}")
-    @Update("{'push'}: {'completedList': ?1}")
+    @Update("{$push: {'completedList': ?1}}") // ?1 is the whole 'completed' object
     void addCompletedToUser(String userId, Completed completed);
 
-    @Query(value = "{'_id': ?0}", fields = "{'completedList': 1, '_id': 0}")
-    Page<Completed> getAllCompleted(String userId, Pageable pageable);
 
     // This method will correctly map the result to an Optional<Note>
     @Aggregation(pipeline = {
@@ -31,6 +30,14 @@ public interface UserTaskRepository extends MongoRepository<User, String> {
             "{'$replaceRoot': {'newRoot': '$noteList'}}" // Stage 4: Promote the matching 'Note' object to the root level
     })
     Optional<Note> getNoteByIds(String userId, String taskId);
+
+    @Aggregation(pipeline = {
+            "{ $match: { '_id': ?2 } }",
+            "{ $unwind: '$completedList' }",
+            "{ $match: { 'completedList.score': { $gte: ?0, $lte: ?1 } } }",
+            "{ $count: 'count' }"
+    })
+    Integer getAllCompleted(int min, int max, String userId);
 
     @Query("{'_id': ?0, 'noteList.taskId': {'$ne': ?1}}")
     @Update("{'$push': {'noteList': ?2}}")

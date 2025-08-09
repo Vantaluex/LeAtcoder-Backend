@@ -1,8 +1,11 @@
 package com.JCC.LeAtcoderAPI.controllers;
 
+import com.JCC.LeAtcoderAPI.Model.ServiceObjects.DifficultyObject;
+import com.JCC.LeAtcoderAPI.Model.ServiceObjects.UserProgressDTO;
 import com.JCC.LeAtcoderAPI.Model.User.Completed;
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import com.JCC.LeAtcoderAPI.services.ScrapeService;
+import com.JCC.LeAtcoderAPI.services.TaskService;
 import com.JCC.LeAtcoderAPI.services.UserService;
 import com.JCC.LeAtcoderAPI.services.UserTaskService;
 import org.springframework.http.HttpStatus;
@@ -16,10 +19,12 @@ public class UserController {
 
     private final UserService userService;
     private final UserTaskService userTaskService;
+    private final TaskService taskService;
 
-    public UserController(UserService userService, UserTaskService userTaskService) {
+    public UserController(UserService userService, UserTaskService userTaskService, TaskService taskService) {
         this.userService = userService;
         this.userTaskService = userTaskService;
+        this.taskService = taskService;
     }
 
     @GetMapping
@@ -40,12 +45,28 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/completed") //ERM HOW DO WE MAKE THIS SAFE...? :/
+
+    @PostMapping("/completed")
     public ResponseEntity<Void> addCompletedTask(
             @PathVariable String userId,
-            @RequestParam Completed problemId) {
-        userTaskService.addCompletedTask(userId, problemId);
+            @RequestParam String problemId,
+            @RequestParam int score) {
+
+        Completed completedTask = new Completed(problemId, score);
+        userTaskService.addCompletedTask(userId, completedTask);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @GetMapping("/progress")
+    public UserProgressDTO getFinishedTasksProgress(@PathVariable String userId) {
+
+        DifficultyObject userCompletedTasks = userTaskService.getAllCompleted(userId);
+        DifficultyObject totalTasks = taskService.getTotalDifficulties();
+
+        return new UserProgressDTO(userCompletedTasks, totalTasks);
+    }
+
 
 }
