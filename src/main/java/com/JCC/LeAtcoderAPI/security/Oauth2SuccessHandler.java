@@ -1,9 +1,7 @@
 package com.JCC.LeAtcoderAPI.security;
 
 import com.JCC.LeAtcoderAPI.Model.User.User;
-import com.JCC.LeAtcoderAPI.repositories.UserRepository;
 import com.JCC.LeAtcoderAPI.services.UserService;
-import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class Oauth2SuccessHandler implements org.springframework.security.web.authentication.AuthenticationSuccessHandler {
     @Autowired
     private UserService userService;
