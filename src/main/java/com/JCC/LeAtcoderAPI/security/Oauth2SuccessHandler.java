@@ -1,5 +1,6 @@
 package com.JCC.LeAtcoderAPI.security;
 
+import com.JCC.LeAtcoderAPI.Model.ServiceObjects.Limits;
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import com.JCC.LeAtcoderAPI.services.UserService;
 import jakarta.servlet.ServletException;
@@ -28,7 +29,7 @@ public class Oauth2SuccessHandler implements org.springframework.security.web.au
         String googleId = oAuth2User.getAttribute("sub");
 
         User user = userService.findOrCreateByGoogleId(googleId);
-        String tempToken = jwtService.createTempToken(user._id());
+        String tempToken = jwtService.createTokenBySubAndExpiry(user._id(), Limits.TEMP_EXPIRY_IN_SECONDS);
 
         response.sendRedirect(redirectURL + "?tempToken=" + tempToken);
     }
