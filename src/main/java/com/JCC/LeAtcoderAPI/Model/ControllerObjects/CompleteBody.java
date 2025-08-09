@@ -1,4 +1,4 @@
 package com.JCC.LeAtcoderAPI.Model.ControllerObjects;
 
-public record CompleteBody() {
+public record CompleteBody(String accessToken) {
 }
