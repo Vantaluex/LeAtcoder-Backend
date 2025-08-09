@@ -1,5 +1,6 @@
 package com.JCC.LeAtcoderAPI.security;
 
+import com.JCC.LeAtcoderAPI.Model.ServiceObjects.Limits;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,7 @@ public class JwtService {
         signingKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    private String createTokenBySubAndExpiry(String sub, long seconds) {
+    public String createTokenBySubAndExpiry(String sub, long seconds) {
         Instant now = Instant.now();
         return Jwts.builder()
                 .setSubject(sub)
@@ -30,18 +31,6 @@ public class JwtService {
                 .setExpiration(Date.from(now.plusSeconds(seconds)))
                 .signWith(signingKey)
                 .compact();
-    }
-
-    public String createTempToken(String googleId) {
-        return createTokenBySubAndExpiry(googleId, 60);
-    }
-
-    public String createAccessToken(String userId) {
-        return createTokenBySubAndExpiry(userId, 60 * 60 * 72);
-    }
-
-    public String createRefreshToken(String userId) {
-        return createTokenBySubAndExpiry(userId, 60 * 60 * 24 * 30);
     }
 
     public String extractToken(String token) {
