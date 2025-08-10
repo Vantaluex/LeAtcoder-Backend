@@ -2,10 +2,14 @@ package com.JCC.LeAtcoderAPI.services;
 
 import com.JCC.LeAtcoderAPI.Model.ServiceObjects.DifficultyObject;
 import com.JCC.LeAtcoderAPI.Model.User.Completed;
+import com.JCC.LeAtcoderAPI.Model.User.Note;
 import com.JCC.LeAtcoderAPI.repositories.UserRepository;
 import com.JCC.LeAtcoderAPI.repositories.UserTaskRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.JCC.LeAtcoderAPI.Model.ServiceObjects.UserTaskDTO;
+
+import java.util.Optional;
 
 @Service
 public class UserTaskService {
@@ -13,9 +17,11 @@ public class UserTaskService {
     UserTaskService(UserTaskRepository userTaskRepository) {
         this.userTaskRepository = userTaskRepository;
     }
+
     public void addCompletedTask(String userId, Completed completed) {
         userTaskRepository.addCompletedToUser(userId, completed);
     }
+
     public DifficultyObject getAllCompleted(String userId) {
         int beginner = this.userTaskRepository.getAllCompleted(
                 DifficultyObject.BEGINNER_MIN, DifficultyObject.BEGINNER_MAX, userId);
@@ -34,4 +40,12 @@ public class UserTaskService {
 
         return new DifficultyObject(beginner, easy, medium, hard, expert);
     }
+
+    public Optional getNoteByIds(String userId, String taskId){
+        Optional note = this.userTaskRepository.getNoteByIds(userId, taskId);
+        return note;
+    }
+
+
+
 }
