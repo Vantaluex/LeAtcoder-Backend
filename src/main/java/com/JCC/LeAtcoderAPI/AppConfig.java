@@ -12,9 +12,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class AppConfig {
     private static final Dotenv dotenv = Dotenv.load();
     @Bean
-    public MongoClient mongoClient(@Value("${spring.data.mongodb.uri}") String mongoUri) {
-        String URI = dotenv.get(mongoUri);
-        return MongoClients.create(URI);
+    public MongoClient mongoClient(@Value("${spring.data.mongodb.uri}") String mongoURI) {
+        return MongoClients.create(mongoURI);
     }
 
     @Bean
