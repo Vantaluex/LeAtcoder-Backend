@@ -3,6 +3,7 @@ package com.JCC.LeAtcoderAPI.services;
 import com.JCC.LeAtcoderAPI.Model.User.User;
 import com.JCC.LeAtcoderAPI.repositories.UserRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,7 +13,9 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    UserService(UserRepository userRepository) {
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
