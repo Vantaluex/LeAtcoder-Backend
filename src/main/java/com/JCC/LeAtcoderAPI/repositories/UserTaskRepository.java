@@ -46,5 +46,5 @@ public interface UserTaskRepository extends MongoRepository<User, String> {
     void removeNote(String userId, String taskId);
 
     @Query(value = "{'googleId': ?0}", fields = "{'completedList': 1, '_id': 0}")
-    Optional<List<Object>> findCompletedListByGoogleId(String googleId);
+    Optional<List<Completed>> findCompletedListByGoogleId(String googleId);
 }

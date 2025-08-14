@@ -64,11 +64,13 @@ public class TaskService {
 
         // Part 2: Build status criteria
         if (!"all".equalsIgnoreCase(status)) {
-            List<String> completedTaskIds = (userId == null) ?
-                    Collections.emptyList()
+            List<String> completedTaskIds = (userId == null)
+                    ? Collections.emptyList()
                     : userTaskRepository.findCompletedListByGoogleId(userId)
-                            .map(User::completedList).orElse(Collections.emptyList())
-                            .stream().map(Completed::taskId).collect(Collectors.toList());
+                    .orElse(Collections.emptyList())  // Already a List<Completed>
+                    .stream()
+                    .map(Completed::taskId)
+                    .collect(Collectors.toList());
 
             if ("completed".equalsIgnoreCase(status)) {
                 allConditions.add(Criteria.where("_id").in(completedTaskIds));
