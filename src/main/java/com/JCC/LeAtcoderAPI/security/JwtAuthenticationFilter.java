@@ -28,13 +28,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.sendError(401, "no auth token in headers");
-        };
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"no auth token in headers\"}");
+            return;        };
 
         String token = authHeader.substring(7);
         String userId = jwtService.extractToken(token);
         if (userId == null) {
-            response.sendError(401, "user not found in database, invalid user");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"no auth token in headers\"}");
+            return;
         };
 
         User user = userService.getAllUserInfo(userId);
