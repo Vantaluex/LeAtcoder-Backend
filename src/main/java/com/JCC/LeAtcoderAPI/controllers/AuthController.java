@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,6 +32,10 @@ public class AuthController {
     }
 
     // keep in mind default oauth endpoint in spring is /oauth2/authorization/google
+    @GetMapping("/login/google")
+    public RedirectView loginWithGoogle() {
+        return new RedirectView("/oauth2/authorization/google");
+    }
 
     @GetMapping("/complete")
     @ResponseBody
