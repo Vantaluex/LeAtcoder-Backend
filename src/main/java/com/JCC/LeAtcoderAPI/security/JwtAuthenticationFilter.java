@@ -27,11 +27,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) return;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.sendError(401, "no auth token in headers");
+        };
 
         String token = authHeader.substring(7);
         String userId = jwtService.extractToken(token);
-        if (userId == null) return;
+        if (userId == null) {
+            response.sendError(401, "user not found in database, invalid user");
+        };
 
         User user = userService.getAllUserInfo(userId);
         UsernamePasswordAuthenticationToken auth =
@@ -39,5 +43,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getRequestURI().startsWith("/auth/");
     }
 }
