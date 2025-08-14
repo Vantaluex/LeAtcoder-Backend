@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,5 +30,19 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Query("{'_id': ?0}")
     @Update("{'$set': ?1}") // takes in the whole userdocument named stats. should be fine....
     void updateUserStats(ObjectId _id, org.bson.Document Stats);
+
+    default User createUserByGoogleId(String googleId) {
+        User newUser = new User(
+                null,
+                googleId,
+                "newuser",
+                0,
+                0.0,
+                0,
+                List.of(),
+                List.of()
+        );
+        return insert(newUser);
+    }
 
 }

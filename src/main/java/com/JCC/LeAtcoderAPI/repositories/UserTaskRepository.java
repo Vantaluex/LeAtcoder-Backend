@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -45,5 +46,5 @@ public interface UserTaskRepository extends MongoRepository<User, String> {
     void removeNote(String userId, String taskId);
 
     @Query(value = "{'googleId': ?0}", fields = "{'completedList': 1, '_id': 0}")
-    Optional<User> findCompletedListByGoogleId(String googleId); //change this shit
+    Optional<List<Object>> findCompletedListByGoogleId(String googleId);
 }
