@@ -42,6 +42,7 @@ public class AuthController {
         User user = userService.getAllUserInfo(userId);
         if (user == null) return new ResponseEntity<>("user not found in database",HttpStatus.BAD_REQUEST);
 
+        System.out.println("extracted userid: " + user._id());
         String refreshToken = jwtService.createTokenBySubAndExpiry(user._id(), Limits.REFRESH_EXPIRY_IN_SECONDS);
         Cookie cookie = createTokenCookie(refreshToken);
         response.addCookie(cookie);
