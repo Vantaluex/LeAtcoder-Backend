@@ -33,6 +33,7 @@ public class AuthController {
     // keep in mind default oauth endpoint in spring is /oauth2/authorization/google
 
     @GetMapping("/complete")
+    @ResponseBody
     public ResponseEntity<?> completeLogin(
             @RequestParam(name = "token") String token,
             HttpServletResponse response
@@ -52,6 +53,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
+    @ResponseBody
     public ResponseEntity<?> refresh(
             HttpServletResponse response,
             HttpServletRequest request
