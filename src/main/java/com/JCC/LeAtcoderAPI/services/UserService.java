@@ -27,11 +27,8 @@ public class UserService {
 
     public User findOrCreateByGoogleId(String googleId) throws IllegalStateException {
         Optional<User> user = userRepository.findByGoogleId(googleId);
-        if (user.isPresent()) return user.get();
+        return user.orElseGet(() -> userRepository.createUserByGoogleId(googleId));
 
-        Optional<User> createdUser = userRepository.createByGoogleId(googleId);
-        if (createdUser.isPresent()) return createdUser.get();
-        else throw new IllegalStateException("failed to create user with googleID: " + googleId);
     }
 
     private ObjectId getObjectIdAndCheckInDb(String _id) throws NoSuchElementException{
