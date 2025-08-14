@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (userId == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"no auth token in headers\"}");
+            response.getWriter().write("{\"error\": \"user is null after extracting the token\"}");
             return;
         };
 
