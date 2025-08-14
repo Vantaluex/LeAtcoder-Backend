@@ -31,7 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"no auth token in headers\"}");
-            return;        };
+            return;
+        };
 
         String token = authHeader.substring(7);
         String userId = jwtService.extractToken(token);
