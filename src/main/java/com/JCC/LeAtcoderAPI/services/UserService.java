@@ -34,7 +34,7 @@ public class UserService {
         else throw new IllegalStateException("failed to create user with googleID: " + googleId);
     }
 
-    private ObjectId getObjectIdAndCheckInDb(String _id) {
+    private ObjectId getObjectIdAndCheckInDb(String _id) throws NoSuchElementException{
         ObjectId objectId = new ObjectId(_id);
         Optional<User> user = userRepository.findById(objectId);
         if (user.isEmpty()) {
