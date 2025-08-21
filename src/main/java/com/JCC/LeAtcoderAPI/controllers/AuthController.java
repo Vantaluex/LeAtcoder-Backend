@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,8 +32,13 @@ public class AuthController {
     }
 
     // keep in mind default oauth endpoint in spring is /oauth2/authorization/google
+    @GetMapping("/login/google")
+    public RedirectView loginWithGoogle() {
+        return new RedirectView("/oauth2/authorization/google");
+    }
 
     @GetMapping("/complete")
+    @ResponseBody
     public ResponseEntity<?> completeLogin(
             @RequestParam(name = "token") String token,
             HttpServletResponse response
@@ -42,6 +48,7 @@ public class AuthController {
         User user = userService.getAllUserInfo(userId);
         if (user == null) return new ResponseEntity<>("user not found in database",HttpStatus.BAD_REQUEST);
 
+        System.out.println("extracted userid: " + user._id());
         String refreshToken = jwtService.createTokenBySubAndExpiry(user._id(), Limits.REFRESH_EXPIRY_IN_SECONDS);
         Cookie cookie = createTokenCookie(refreshToken);
         response.addCookie(cookie);
@@ -51,6 +58,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
+    @ResponseBody
     public ResponseEntity<?> refresh(
             HttpServletResponse response,
             HttpServletRequest request
