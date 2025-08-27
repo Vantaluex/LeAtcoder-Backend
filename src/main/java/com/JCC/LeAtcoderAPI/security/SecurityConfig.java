@@ -16,6 +16,7 @@ public class SecurityConfig {
     private final Oauth2SuccessHandler oauth2SuccessHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
     @Autowired
     public SecurityConfig(
             Oauth2SuccessHandler oauth2SuccessHandler,
@@ -28,9 +29,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(sm ->
+                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // preflights
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -39,5 +42,22 @@ public class SecurityConfig {
                         .successHandler(oauth2SuccessHandler)
                 );
         return http.build();
+    }
+    @Bean
+    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+        var cfg = new org.springframework.web.cors.CorsConfiguration();
+        cfg.setAllowedOrigins(java.util.List.of(
+                "http://localhost:3000"
+                // add more links later if needed
+        ));
+        cfg.setAllowedMethods(java.util.List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        cfg.setAllowedHeaders(java.util.List.of("Content-Type","Authorization"));
+        cfg.setExposedHeaders(java.util.List.of("Authorization"));
+        cfg.setAllowCredentials(true);
+        cfg.setMaxAge(3600L);
+
+        var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cfg);
+        return source;
     }
 }
